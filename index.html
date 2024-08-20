@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Image Tracing with Menu</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.2/aframe/build/aframe-ar.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            overflow: hidden;
+            height: 100%;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #menu {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            display: none;
+            justify-content: center;
+            text-align: center;
+            animation: fadeIn 1s forwards;
+        }
+        .menu-item {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            color: #333;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="menu">
+        <div class="menu-item">الأهداف</div>
+        <div class="menu-item">الوسائط</div>
+        <div class="menu-item">الكتاب</div>
+        <div class="menu-item">الأنشطة</div>
+        <div class="menu-item">التعليمات</div>
+    </div>
+
+    <a-scene embedded arjs>
+        <!-- Replace 'path/to/your/marker.patt' with the actual path to your .patt file -->
+        <a-marker type="pattern" url="markers/pattern-QR1.patt" emitevents="true">
+            <a-entity id="target" geometry="primitive: box; height: 1; width: 1;" material="color: red;" position="0 0.5 0">
+            </a-entity>
+        </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+        const targetEntity = document.getElementById('target');
+        const menu = document.getElementById('menu');
+
+        targetEntity.addEventListener('markerFound', () => {
+            menu.style.display = 'flex';
+        });
+
+        targetEntity.addEventListener('markerLost', () => {
+            menu.style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
