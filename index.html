@@ -23,6 +23,8 @@
       justify-content: center;
       align-items: center;
       z-index: 999;
+      opacity: 1;
+      transition: opacity 0.5s;
     }
     .overlay-content {
       background-color: white;
@@ -72,12 +74,8 @@
   </style>
 </head>
 <body>
-  <div class="overlay" id="overlay">
-    <div class="overlay-content">السماح بالكاميرا</div>
-  </div>
-
   <a-scene embedded arjs>
-    <a-marker type="pattern" url="QR1.patt">
+    <a-marker type="pattern" url="path/to/your/marker.patt">
       <a-entity position="0 0 0">
         <div class="menu-container" id="menu-container">
           <div class="menu-title">AR Menu</div>
@@ -92,6 +90,10 @@
     <a-entity camera></a-entity>
   </a-scene>
 
+  <div class="overlay" id="overlay">
+    <div class="overlay-content">السماح بالكاميرا</div>
+  </div>
+
   <script>
     var overlay = document.getElementById('overlay');
     var menuContainer = document.getElementById('menu-container');
@@ -99,11 +101,12 @@
     // Hide the overlay and show the menu when the camera is accessed
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(function() {
-        overlay.style.display = 'none';
+        overlay.style.opacity = '0';
         menuContainer.style.opacity = '1';
       })
       .catch(function(error) {
         console.error('Error accessing camera:', error);
+        overlay.style.opacity = '1';
       });
   </script>
 </body>
