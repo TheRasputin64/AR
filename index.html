@@ -6,6 +6,12 @@
   <script src="https://cdn.jsdelivr.net/npm/ar.js@2.1.6/aframe/build/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/ar.js@2.1.6/aframe/build/aframe-ar.js"></script>
   <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
     .overlay {
       position: fixed;
       top: 0;
@@ -27,21 +33,36 @@
       font-weight: bold;
     }
     .menu-container {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-gap: 20px;
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f0f0;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    .menu-title {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 20px;
     }
     .menu-item {
-      background-color: #f0f0f0;
+      background-color: #FFCDD2;
       padding: 20px;
       border-radius: 5px;
       text-align: center;
-      font-size: 18px;
+      font-size: 24px;
       font-weight: bold;
       cursor: pointer;
+      margin: 10px;
+      width: 80%;
+      max-width: 400px;
     }
     .pastel-1 { background-color: #FFCDD2; }
     .pastel-2 { background-color: #C8E6C9; }
@@ -56,10 +77,10 @@
   </div>
 
   <a-scene embedded arjs>
-    <a-marker type="pattern" url="QR1.patt">
+    <a-marker type="pattern" url="path/to/your/marker.patt">
       <a-entity position="0 0 0">
-        <a-image src="your_image.png" width="2" height="2"></a-image>
-        <div class="menu-container">
+        <div class="menu-container" id="menu-container">
+          <div class="menu-title">AR Menu</div>
           <div class="menu-item pastel-1">Box 1</div>
           <div class="menu-item pastel-2">Box 2</div>
           <div class="menu-item pastel-3">Box 3</div>
@@ -73,11 +94,13 @@
 
   <script>
     var overlay = document.getElementById('overlay');
+    var menuContainer = document.getElementById('menu-container');
 
-    // Hide the overlay when the camera is accessed
+    // Hide the overlay and show the menu when the camera is accessed
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(function() {
         overlay.style.display = 'none';
+        menuContainer.style.opacity = '1';
       })
       .catch(function(error) {
         console.error('Error accessing camera:', error);
